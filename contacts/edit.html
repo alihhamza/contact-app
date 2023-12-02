@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit contact</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="wrapper">
+        
+        <form id="edit-contact-form" name="edit-contact-form">
+            <div class="top-buttons">
+                <a href="/index.html">Cancel</a>
+                <button type="submit">Save</button>
+            </div>
+
+            <div>
+                <label for="f-name">First Name</label>
+                <input type="text" id="f-name" name="f-name" placeholder="First Name">
+            </div>
+
+            <div>
+                <label for="l-name">Last Name</label>
+                <input type="text" id="l-name" name="l-name" placeholder="Last Name">
+            </div>
+
+            <div>
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number">
+            </div>
+
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Email">
+            </div>
+        </form>
+
+        <button class="del-contact-button" id="delete-contact">Delete</button>
+    </div>
+
+    <script src="../index.js"></script>
+
+    <script>
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const contactId = urlParams.get('id');
+
+        let contacts = localStorage.getItem('contacts') ? JSON.parse(localStorage.getItem('contacts')) : [];
+
+        if (contacts && contacts.length > 0) {
+            contacts.forEach(contact => {
+                if (contact.id == contactId) {
+                    document.forms["edit-contact-form"]["f-name"].value = contact.firstName;
+                    document.forms["edit-contact-form"]["l-name"].value = contact.lastName;
+                    document.forms["edit-contact-form"]["phone"].value = contact.phone;
+                    document.forms["edit-contact-form"]["email"].value = contact.email;
+                }
+            })
+        }
+
+        const form = document.querySelector('#edit-contact-form');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            let fname = document.forms["edit-contact-form"]["f-name"].value;
+            let lname = document.forms["edit-contact-form"]["l-name"].value;
+            let phone = document.forms["edit-contact-form"]["phone"].value;
+            let email = document.forms["edit-contact-form"]["email"].value;
+
+            if (fname === "" || fname.trim() === "") {
+                alert("First Name must be filled out");
+                return false;
+            } else if (lname === "" || lname.trim() === "") {
+                alert("Last Name must be filled out");
+                return false;
+            } else if (phone === "" || phone.trim() === "") {
+                alert("Phone must be filled out");
+                return false;
+            } else if (email === "" || email.trim() === "") {
+                alert("Email must be filled out");
+                return false;
+            } else {
+
+                if (contacts && contacts.length > 0) {
+                    contacts.forEach(contact => {
+                        if (contact.id == contactId) {
+                            contact.firstName = fname;
+                            contact.lastName= lname;
+                            contact.phone = phone;
+                            contact.email = email;
+                        }
+                    })
+
+                    localStorage.setItem('contacts', JSON.stringify(contacts));
+
+                    window.location.href = '/index.html';
+                }
+            }
+
+        })
+
+        const deleteContact = document.getElementById('delete-contact');
+        deleteContact.addEventListener('click', () => {
+            if (contacts && contacts.length > 0) {
+                contacts = contacts.filter(contact => contact.id != contactId);
+                localStorage.setItem('contacts', JSON.stringify(contacts));
+                window.location.href = '/index.html';
+            }
+        })
+
+    </script>
+</body>
+</html>

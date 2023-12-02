@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Contact</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="top-buttons">
+            <a href="/index.html">Contacts</a>
+            <a href="/contacts/edit.html" class="edit-contact">Edit</a>
+        </div>
+
+        <div id="contact-name"></div>
+        
+        <div id="view-contact">
+            <ul>
+                <li>
+                    <div>
+                        <label for="">Phone</label>
+                        <span id="phone"></span>
+                    </div>
+                    <div>
+                        <img src="../assets/images/smartphone-call.png" width="24" height="24" alt="...">
+                    </div>
+                    <div>
+                        <a href="/contacts/edit.html" class="edit-contact">
+                            <img src="../assets/images/draw.png" width="24" height="24" alt="...">
+                        </a>
+                    </div>
+                </li>
+                <li>
+                    <div>
+                        <label for="">Email</label>
+                        <span id="email"></span>
+                    </div>
+                    <div>
+                        <img src="../assets/images/email.png" width="24" height="24" alt="...">
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <script src="../index.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const contactId = urlParams.get('id');
+
+        /* Set Edit links */
+        const editLinks = document.querySelectorAll('.edit-contact');
+        editLinks.forEach((link, index) => {
+            link.setAttribute('href', `/contacts/edit.html?id=${contactId}`);
+        });
+
+        /* Get and Display Contact */
+        viewContact(contactId, '#contact-name', '#phone', '#email');
+
+    </script>
+</body>
+</html>

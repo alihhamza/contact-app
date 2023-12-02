@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new contact</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <form id="add-contact-form" name="add-contact-form">
+            <div class="top-buttons">
+                <a href="/index.html">Cancel</a>
+                <button type="submit">Save</button>
+            </div>
+    
+            <div>
+                <label for="f-name">First Name</label>
+                <input type="text" id="f-name" name="f-name" placeholder="First Name">
+            </div>
+    
+            <div>
+                <label for="l-name">Last Name</label>
+                <input type="text" id="l-name" name="l-name" placeholder="Last Name">
+            </div>
+    
+            <div>
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Phone Number">
+            </div>
+    
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Email">
+            </div>
+        </form>
+    </div>
+
+    <script src="../index.js"></script>
+
+    <script>
+        // Function to validate form inputs
+        function validateForm() {
+            const fname = document.forms["add-contact-form"]["f-name"].value.trim();
+            const lname = document.forms["add-contact-form"]["l-name"].value.trim();
+            const phone = document.forms["add-contact-form"]["phone"].value.trim();
+            const email = document.forms["add-contact-form"]["email"].value.trim();
+
+            if (fname === "") {
+                alert("First Name must be filled out");
+                return false;
+            }
+            if (lname === "") {
+                alert("Last Name must be filled out");
+                return false;
+            }
+            if (phone === "") {
+                alert("Phone must be filled out");
+                return false;
+            }
+            if (email === "") {
+                alert("Email must be filled out");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Function to save contact to localStorage
+        function saveContact() {
+            const fname = document.forms["add-contact-form"]["f-name"].value.trim();
+            const lname = document.forms["add-contact-form"]["l-name"].value.trim();
+            const phone = document.forms["add-contact-form"]["phone"].value.trim();
+            const email = document.forms["add-contact-form"]["email"].value.trim();
+
+            const contacts = localStorage.getItem('contacts') ? JSON.parse(localStorage.getItem('contacts')) : [];
+
+            const contact = {
+                id: contacts.length + 1,
+                firstName: fname,
+                lastName: lname,
+                phone: phone,
+                email: email,
+            };
+
+            contacts.push(contact);
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+        }
+
+        // Event listener for form submission
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('#add-contact-form');
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                if (validateForm()) {
+                    saveContact();
+                    window.location.href = '/index.html';
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
